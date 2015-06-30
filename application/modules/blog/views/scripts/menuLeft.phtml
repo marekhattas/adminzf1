@@ -1,0 +1,51 @@
+
+<div class="dropdown clearfix" id="menu1">
+<ul class="dropdown-menu"  >
+
+<?php
+
+$model = new Blog_Model_Tree();
+$model2 = new Menu_Model_LeftItems();
+$data = $model2->fetchAll('1','order_num ASC');
+
+
+
+$i = 0;
+//    echo '<li><a style="color: #ffffff;background: #dd137b"><span class="icon-white icon-shopping-cart"></span> ESHOP</a></li>';
+foreach($data as $row){
+    $treeData = $model->getRow($row->tree_id);
+
+    $url = '';
+    if($treeData != null){
+        $url = $treeData->url_name;
+    }
+
+    $subData = $model->fetchAll('tree_id = "'.$treeData->id.'"','order_num DESC');
+    if(count($subData)>0){
+        echo '<li><a " href="/'.$url.'">'.$row->name.'</a>';
+        echo '<ul class="dropdown-menu sub-menu">';
+        foreach($subData as $subRow){
+            $subData2 = $model->fetchAll('tree_id = "'.$subRow->id.'"','order_num DESC');
+            if(count($subData2)>0){
+                echo '<li><a href="/'.$subRow->url_name.'">'.$subRow->name.'</a>';
+                echo '<ul class="dropdown-menu sub-menu">';
+                foreach($subData2 as $subRow2){
+                    echo '<li><a href="/'.$subRow2->url_name.'">'.$subRow2->name.'</a></li>';
+                }
+                echo '</ul>';
+                echo '</li>';
+            }else{
+                echo '<li><a href="/'.$subRow->url_name.'">'.$subRow->name.'</a></li>';
+            }
+        }
+        echo '</ul>';
+        echo '</li>';
+    }else{
+        echo '<li><a class="" href="/'.$url.'">'.$row->name.'</a></li>';
+    }
+
+    $i++;
+}
+?>
+</ul>
+</div>

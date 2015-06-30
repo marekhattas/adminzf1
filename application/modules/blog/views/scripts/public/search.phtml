@@ -1,0 +1,39 @@
+<?php
+
+//nadpis
+echo '<h1>'.text('Vyhľadávanie').'</h1>';
+$val = $this->escape($this->val);
+
+echo '
+<form action="/search" method="get">
+<div class="input-append">
+    <input type="text" name="search" style="width:168px" value="'.$val.'" class="span2" placeholder="Vyhľadávanie">
+    <button type="submit" class="btn"><i class="icon-search"></i></button>
+  </div>
+</form>    
+';
+if(!empty($val)){
+    
+    if(mb_strlen($val)<3){
+        echo '<p>'.text('Musíte zadať viac ako 2 znaky').'</p>';
+    }else{
+        $i = 0;
+        foreach($this->results as $route => $data){
+            echo '<ul>';
+            if(count($data)>0){
+                foreach($data as $row){
+                    $i++;
+                    echo '<li>';
+                    echo '<a href="'.$this->url(array('urlName'=>$row->url_name),$route,true).'">'.$row->name.'</a>';
+                    echo '</li>';
+                }
+            }
+            echo '</ul>';
+        }
+        if($i == 0){
+            echo '<p>'.text('Žiadny záznam sa nenašiel').'</p>';
+        }
+    }
+}
+
+

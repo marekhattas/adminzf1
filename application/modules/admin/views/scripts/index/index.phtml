@@ -1,0 +1,38 @@
+        
+<?php if($this->login === false){?>
+  <div class="flash flash_alert"><?php echo text('Zlý email alebo heslo.');?></div> 
+
+<?php }else{?>
+  <div class="flash flash_alert"><?php echo text('Musíte sa prihlásiť, aby ste mohli pokračovať.');?></div> 
+
+<?php }?>
+
+<div id="active_admin_content"> 
+<div id="login"> 
+
+  <h2><?php echo text('Prihlásenie');?></h2> 
+ 
+  <form accept-charset="UTF-8" action="<?php echo $this->url(array('action'=>'login','controller'=>'index','module'=>'admin'),'admin',true);?>" class="formtastic admin_user" id="session_new" method="post">
+<fieldset class="inputs">
+  <ol>
+   <li class="email required" id="admin_user_email_input">
+   <label for="admin_user_email"><?php echo text('Email');?><abbr title="required">*</abbr></label>
+   <input id="admin_user_email" maxlength="255" name="email" type="email" value="" />
+</li>
+   <li class="password required" id="admin_user_password_input">
+<label for="admin_user_password"><?php echo text('Heslo');?><abbr title="required">*</abbr></label>
+<input id="admin_user_password" name="password" type="password" value="" />
+</li>
+</ol>
+</fieldset>
+
+<fieldset class="buttons">
+<ol><li class="commit"><input class="create" id="admin_user_submit" name="commit" type="submit" value="<?php echo text('Prihlásenie');?>" /></li></ol>
+</fieldset>
+
+</form> 
+
+ 
+ 
+</div> 
+</div> 

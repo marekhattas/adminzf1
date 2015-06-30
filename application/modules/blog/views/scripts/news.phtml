@@ -1,0 +1,16 @@
+<h2>Novinky</h2>
+
+<?php 
+
+$model = new Blog_Model_Tree();
+$model2 = new Blog_Model_Texts();
+$data = $model->fetchAll('tree_id = 50','order_num DESC','0,5');
+if(count($data)>0){
+    foreach($data as $row){
+        $row2 = $model2->getRow($row->id);
+        echo '<i>'.$row->name.'</i>';
+        echo '<p>'.$row2->text_short.'';
+        echo '<br /><a href="/'.$row->url_name.'">čítať viac</a></p>';    
+    }
+}
+

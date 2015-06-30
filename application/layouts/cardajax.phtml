@@ -1,0 +1,13 @@
+<?php
+
+
+echo $this->contentStart($this->card);
+echo $this->layout()->content;
+echo $this->contentEnd($this->card);
+
+echo '
+    <script>
+    $(".modal-dialog .modal-header span").html(\'<h3>'.$this->card->getTitle().'</h3>\');
+    $(".modal-dialog .modal-body h1").hide();
+    $(".modal-dialog .modal-body h2").hide();
+    </script>';

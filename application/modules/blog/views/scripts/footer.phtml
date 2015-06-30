@@ -1,0 +1,28 @@
+
+<?php
+$model = new Blog_Model_Tree();
+$data = $model->fetchRow('controller = "footer" ');
+
+$model2 = new Blog_Model_Texts();
+$data = $model2->getRow($data->id);
+echo 'Všetky práva vyhradené  '.date("Y").' '.$data->text.' <br />';
+?>
+
+<?php
+
+$model = new Blog_Model_Tree();
+$model2 = new Menu_Model_BottomItems();
+$data = $model2->fetchAll('1','order_num ASC');
+$c = '';
+foreach($data as $row){
+    $treeData = $model->getRow($row->tree_id);
+    $url = '';
+    if($treeData != null){
+        $url = $treeData->url_name;
+    }
+    echo $c.'<a href="/'.$url.'">'.$row->name.'</a>';
+    $c = ' | ';
+
+}
+?>
+

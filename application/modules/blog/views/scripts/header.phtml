@@ -1,0 +1,37 @@
+<?php
+$config = new Zend_Config_Ini(APPLICATION_PATH.'/configs/application.ini','production');
+?>
+<head>
+<meta charset="utf-8">
+<title><?php echo $this->info('meta_title',$this->info['meta_title']);?></title>
+<meta name="description" content="<?php echo $this->info('meta_description',$this->info['meta_description']);?>" />
+<meta name="keywords" content="<?php echo $this->info('meta_keywords',$this->info['meta_keywords']);?>" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+<script type="text/javascript" src="/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<link rel="stylesheet" type="text/css" href="/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+
+<link href="/css/bootstrap.css" rel="stylesheet" media="screen">
+<link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
+<link href="/css/style.css?<?php echo $config->version;?>" rel="stylesheet" media="screen">
+<script src="/js/start.js?<?php echo $config->version;?>" type="text/javascript"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/bootstrap-carousel.js"></script>
+<link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+<!--Start of Zopim Live Chat Script-->
+<script type="text/javascript">
+window.$zopim||(function(d,s){var z=$zopim=function(c){
+z._.push(c)},$=z.s=
+d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
+$.src='//v2.zopim.com/?1YCzqrFCdTPqbxxlPq1vfSapBBNMYyAn';z.t=+new Date;$.
+type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
+</script>
+<!--End of Zopim Live Chat Script-->
+
+
+</head>
+

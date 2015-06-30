@@ -1,0 +1,83 @@
+<?php
+//echo '<div class="content">';
+//echo $this->data->text_short;
+//echo '</div>';
+
+//nadpis
+
+
+$model = new Blog_Model_TextPictures();
+$data = $model->fetchAll('text_id = "'.$this->tree->id.'" ','order_num asc');
+echo '<div class="row-fluid">';
+
+echo '<div class="span12">';
+echo '<div id="myCarousel" class="carousel slide" style="margin-bottom:20px">';
+echo '<ol class="carousel-indicators">';
+echo '<li data-target="#myCarousel" data-slide-to="0" class="active"></li>';
+for($i=1;$i<count($data);$i++){
+    echo '<li data-target="#myCarousel" data-slide-to="'.$i.'"></li>';
+}
+echo '</ol>';
+echo '<div class="carousel-inner">';
+$c = ' active';
+foreach($data as $row){
+    echo '<div class="item '.$c.'">';
+    if(!empty($row->name)){
+      echo '<a href="'.$row->name.'">';
+    }
+    echo '<img src="/files/gallery/'.$row->file_name.'" />';
+    if(!empty($row->name)){
+      echo '</a>';
+    }
+    echo '</div>';
+    $c = '';
+}
+echo '</div>';
+echo '
+  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+</div>
+</div>
+</div>
+';
+
+echo '<div class="row-fluid">';
+echo '<div class="content">';
+echo '<h1>'.$this->tree->name.'</h1>';
+
+$model = new Shop_Model_Products();
+$modelPicture = new Shop_Model_ProductPictures();
+$data = $model->fetchAll('new = "1" and active="1"','order_num ASC');
+
+if(count($data)>0){
+  //echo '<table id="productTable" style="margin-top:0px">';
+  $i=0;
+  foreach($data as $obj){
+    if($i==0){
+        echo '<div class="row-fluid">';
+    }
+    $i++;
+    $pic = $modelPicture->fetchRow('product_id = "'.$obj->id.'"','order_num ASC');
+    $img = '';
+    if($pic != null){
+      $img = '<a href="/produkty/'.$obj->url_name.'"><img src="/img.php?folder=gallery&amp;size=profile&amp;image='.$pic->file_name.'" /></a>';
+    }
+      echo '<div class="span3 product-thumb">
+            <div class="imgdiv">'.$img.'</div>
+            <div><a href="/produkty/'.$obj->url_name.'">'.$obj->name.'</a></div>
+            <a class="button magenta" href="/produkty/'.$obj->url_name.'">'.$obj->price.' €</a>
+            </div>';
+    if($i==4){
+        echo '</div>';
+        $i = 0;
+    }
+  }
+
+  if($i!=0){
+      echo '</div>';
+  }
+  //echo '</table>';
+}
+echo '</div>';
+echo '</div>';
+?>

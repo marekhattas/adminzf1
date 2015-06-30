@@ -1,0 +1,28 @@
+
+
+<?php
+
+$model = new Blog_Model_Tree();
+$model2 = new Menu_Model_TopItems();
+$data = $model2->fetchAll('1','order_num ASC');
+
+
+foreach($data as $row){
+    $treeData = $model->getRow($row->tree_id);
+    $class = '';
+
+    if(isset($this->currentCategories[$row->tree_id])){
+        $class = 'class="active"';
+    }
+
+    $url = '';
+    if($treeData != null){
+        $url = $treeData->url_name;
+    }
+
+    echo '<a  href="/'.$url.'" '.$class.'>'.$row->name.'</a>';
+
+}
+
+
+?>

@@ -1,0 +1,55 @@
+<?php 
+
+echo '<h1>'.$this->tree->name.'</h1>';
+echo '<hr />';
+
+
+?>
+<form method="post" id="form">
+<table class="info">
+<tr>
+    <td>
+    Vaše meno:</td><td> <input type="text" name="name" />
+    </td>
+    <td>
+    Telefón:</td><td> <input type="text" name="phone" />
+    </td>
+</tr>
+<tr>
+    <td>
+    Čas:</td><td> <input type="text" name="time" value="9:00" />
+    </td>
+    <td>
+    Miesto:</td><td> <input type="text" name="place" />
+    </td>
+</tr>
+<tr>
+    <td>
+    Poznámka:</td><td colspan="3"> <textarea name="text"></textarea>
+    </td>
+</tr>
+<tr>
+    <td></td><td></td>
+    <td></td><td><a id="submit" href="javascript:void(0);"><img src="/images/button.jpg" id="send"></a></td>
+</tr>
+
+</table>
+</form>
+
+<?php
+
+//echo $this->form;
+
+if(isset($this->ok)){
+    echo '<script>alert("'.text('Formulár bol úspešne odoslaný. Ďakujeme').'")</script>';
+}
+if(isset($this->error)){
+    echo '<script>alert("'.text('Formulár bol nesprávne vyplnený, skúste to ešte raz.').'")</script>';
+}
+?>
+<script>
+$('#submit').click(function() {
+  $('#form').submit();
+});
+</script>    
+    

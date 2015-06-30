@@ -1,0 +1,244 @@
+<?php
+
+$acl = new Cms_Acl();
+
+        $text =   '
+        <div id="title_bar">
+            <h2 id="page_title">
+<span class="breadcrumb"><a href="/">Www</a> <span class="breadcrumb_sep">/</span> <a href="/admin">Admin</a> <span class="breadcrumb_sep">/</span> </span>            
+Základné informácie</h2>
+            <div class="action_items"></div>
+        </div>
+        <div class="without_sidebar" id="active_admin_content">
+        <div id="content"></div>
+        <div id="main_content_wrapper">
+        <div id="main_content">
+        <table border="0" class="dashboard" cellspacing="0" cellpadding="0">
+        <tr>
+        <td width="33%">';
+
+        
+if($acl->isUserAllowed('Blog_TreeController')){        
+        $text .='
+        <div class="panel dashboard_section">
+        <h3>'.text('Štruktúra a obsah vašich stránok').'</h3>
+        <div class="panel_contents">
+        <div class="product attributes_table"><table>';
+
+        $model = new Blog_Model_Tree();
+        $childs = $model->getTreeChilds();
+        $data = $model->treeList($childs);
+        $class = "odd";
+
+        foreach($data as $obj){
+            $row = $obj['row'];
+            $text.= '<tr class="'.$class.'">
+                    <td><a href="'.$this->url(array('controller'=>'tree','action'=>'edit','module'=>'blog','id'=>$row->id),'admin',true).'">'.$obj['distance'].$row->name.'</a></td></tr>';
+//                    <td>'.$obj['distance'].$row->name.'</td></tr>';
+
+            if($class == "odd"){
+            $class = "event";
+            }else{
+            $class = "odd";
+            }
+        }
+        $text.= '<tr class="'.$class.'"><td style="text-align:right"><a href="'.$this->url(array('controller'=>'tree','action'=>'index','module'=>'blog'),'admin',true).'">edituj</a></td></tr>';
+
+        $text .='
+        </table>
+        </div>
+        </div>
+        </div>
+        </div>';
+}
+        $text .='</td><td width="33%">';
+
+if($acl->isUserAllowed('Menu_AdminController')){            
+        $text .='
+        <div class="panel dashboard_section">
+        <h3>'.text('Menu').'</h3>
+        <div class="panel_contents">
+        <div class="product attributes_table"><table>';
+        
+
+        $model = new Menu_Model_TopItems();
+
+        $text .=   '
+        <thead>
+        <tr>
+        <th><br />Spodné menu</th>
+        </tr>
+        </thead>
+        <tbody>
+        ';
+        $rows = $model->fetchAll(1,'order_num ASC');
+        $class= "odd";
+        foreach($rows as $row){
+        $text.= '<tr class="'.$class.'"><td>'.$row->name.'</td></tr>';
+
+        if($class == "odd"){
+        $class = "event";
+        }else{
+        $class = "odd";
+        }
+
+        }
+        $text.= '<tr class="'.$class.'"><td style="text-align:right"><a href="'.$this->url(array('node'=>'Menu_Node_Index','action'=>'index','module'=>'menu'),'admin',true).'">edituj</a></td></tr>';
+
+        $text .=   '
+        </tbody>
+        ';
+
+        $model = new Menu_Model_BottomItems();
+
+        $text .=   '
+        <thead>
+        <tr>
+        <th><br />Spodné menu</th>
+        </tr>
+        </thead>
+        <tbody>
+        ';
+        $rows = $model->fetchAll(1,'order_num ASC');
+        $class= "odd";
+        foreach($rows as $row){
+        $text.= '<tr class="'.$class.'"><td>'.$row->name.'</td></tr>';
+
+        if($class == "odd"){
+        $class = "event";
+        }else{
+        $class = "odd";
+        }
+
+        }
+        $text.= '<tr class="'.$class.'"><td style="text-align:right"><a href="'.$this->url(array('controller'=>'tree','action'=>'index','module'=>'blog'),'admin',true).'">edituj</a></td></tr>';
+
+ 
+
+        $text .='
+        </table>
+        </div>
+        </div>
+        </div>
+        </div>';
+}         
+         
+if($acl->isUserAllowed('Admin_UserController')){            
+        $text .='
+        <div class="panel dashboard_section">
+        <h3>'.text('Užívatelia').'</h3>
+        <div class="panel_contents">
+        <div class="product attributes_table"><table>';
+
+        $model = new Admin_Model_Users();
+
+        $rows = $model->fetchAll();
+        $class= "odd";
+
+        foreach($rows as $row){
+          $active="aktívny";
+          if($row->active == 0){
+            $active =  "neaktívny";
+          }
+          $text.= '<tr class="'.$class.'">
+                    <td>'.$row->name.'</td>
+                    <td>'.$row->email.'</td>
+                    <td>'.$active.'</td></tr>';
+          if($class == "odd"){
+            $class = "event";
+          }else{
+            $class = "odd";
+          }
+        }
+        $text.= '<tr class="'.$class.'"><td colspan="3" style="text-align:right">
+        <a href="'.$this->url(array('controller'=>'user','action'=>'index','module'=>'admin'),'admin',true).'">edituj</a>
+        </td></tr>';
+
+        $text .='
+        </table>
+        </div>
+        </div>
+        </div>
+        </div>';
+}         
+
+
+
+
+        $text .=   '</td><td width="33%">';
+
+        $text .='
+        <div class="panel dashboard_section">
+        <h3>'.text('Licencia').'</h3>
+        <div class="panel_contents">
+        <div class="product attributes_table"><table>';
+
+        $model =  new Zend_Session_Namespace('l');
+        if($model->data->status == false){
+           $text.= '<tr class="odd"><td>Stav:</td><td> Licencia <b>neplatná</b></td></tr>';
+           $text.= '<tr class="event"><td>IP server:</td><td> '.$model->data->ip.'</td></tr>';
+           $text.= '<tr class="odd"><td>Názov servera:</td><td> '.$model->data->serverName.'</td></tr>';
+           $text.= '<tr class="event"><td>Počet užívateľov:</td><td> '.$model->data->users.'</td></tr>';
+        }else{
+           $text.= '<tr class="odd"><td>Stav:</td><td> Licencia platná</td></tr>';
+           $date = 'Neobmedzene';
+           if(!empty($model->data->dateTo)){
+               $dateObj = new Cms_Date();
+               $date = $dateObj->dateFromDb($model->data->dateTo);
+           }
+           $text.= '<tr class="event"><td>Platnosť do:</td><td> '.$date.'</td></tr>';
+           $users = 'Neobmedzene';
+           if(!empty($model->data->users)){
+               $users = $model->data->users;
+           }
+           $text.= '<tr class="odd"><td>Maximálny počet užívateľov:</td><td> '.$users.'</td></tr>';
+           $text.= '<tr class="event"><td>IP server:</td><td> '.$model->data->ip.'</td></tr>';
+           $text.= '<tr class="odd"><td>Názov servera:</td><td> '.$model->data->serverName.'</td></tr>';
+        }
+
+        $text .='
+        </table>
+        </div>
+        </div>
+        </div>
+        </div>';
+
+if($acl->isUserAllowed('Blog_InfosController')){            
+        $text .='
+        <div class="panel dashboard_section">
+        <h3>'.text('Základné informácie o stránke').'</h3>
+        <div class="panel_contents">
+        <div class="product attributes_table"><table>';
+
+        $model = new Blog_Model_Infos();
+        $row = $model->getRow(1);
+
+        $text.= '<tr class="odd">
+                <td><b>Názov stránky: </b>'.$row->meta_title.'</td></tr>';
+        $text.= '<tr class="event">
+                <td><b>Stručný popis stránky:</b></td></tr><tr class="odd"><td>'.$row->meta_description.'</td></tr>';
+        $text.= '<tr class="event">
+                <td><b>Klúčové slová:</b></td></tr><tr class="odd"><td>'.$row->meta_keywords.'</td></tr>';
+        $text.= '<tr class="event">
+                <td><b>Kód pre štatistiku:</b></td></tr><tr class="odd"><td>'.$this->escape($row->statistics).'</td></tr>';
+        $text.= '<tr class="event"><td style="text-align:right"><a href="'.$this->url(array('controller'=>'infos','action'=>'index','module'=>'blog'),'admin',true).'">edituj</a></td></tr>';
+
+
+      
+        
+        
+        $text .='
+        </table>
+        </div>
+        </div>
+        </div>
+        ';
+}
+
+        $text .='</td></tr></table>
+        </div>
+        </div>
+        </div>';
+
+
+echo $text;

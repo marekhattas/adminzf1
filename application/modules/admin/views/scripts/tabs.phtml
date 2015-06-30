@@ -1,0 +1,32 @@
+<div id="tabs">
+<?php
+
+$menuObj = new Admin_View_Helper_Menu();
+$menu =  $menuObj->menu();
+
+foreach($menu as $item){
+  $c = "";
+  if($this->currentNodeName == $item['controller']){
+    $c = "current";
+  }
+  $e = explode("_",$item['controller']);
+  $module = lcfirst($e[0]);
+  
+  echo '<div class="box '.$c.'" >
+      <a href="'.$this->url(array('module'=>$module,'controller'=>substr(lcfirst($e[1]),0,-10)),'admin',true).'">
+      <img src="/admin/images/'.$item['icon'].'.png" style="margin-bottom:7px" width="45" height="50"></a>
+      <a class="text" href="'.$this->url(array('module'=>$module,'controller'=>substr(lcfirst($e[1]),0,-10)),'admin',true).'">
+      '.$item['title'].'
+      </a></div>';
+}
+?>
+</div>
+
+<p id="utility_nav">
+<a class="cancelAjax" href="<?php echo $this->url(array("controller"=>"profile","module"=>"admin"),"admin",true);?>"><?php echo $this->name;?></a>  |
+<a class="cancelAjax" href="<?php echo $this->url(array("controller"=>"index","action"=>"logout","module"=>"admin"),"admin",true);?>"><?php echo text('Odhlásiť');?></a>
+</p>
+
+
+
+

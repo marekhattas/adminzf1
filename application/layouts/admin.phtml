@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <?php echo $this->partial('head.phtml','admin'); ?>
+    <body>
+        <?php echo $this->partial('script.phtml','admin'); ?>
+        <?php echo $this->partial('tabs.phtml','admin'); ?>
+
+        <div id="card_general" class="content container card_content">
+        <?php
+
+        if(isset($this->card)){
+            $html = '';
+            $html .= '<div class="row">';
+            $html .= '<div class="col-md-12 cmsWhite">';
+            $html .= '<div class="breadcrumbs"></div>';
+            $html .= '<div id="card_'.$this->controllerClassName().'" cms-url="'.$this->url().'" name="card_'.$this->controllerClassName().'" class="card_content">';
+            echo $html;
+            echo $this->contentStart($this->card);
+        }
+        
+        echo $this->layout()->content;
+
+        if(isset($this->card)){
+            echo $this->contentEnd($this->card);
+            $html = '';
+            $html .= '</div>';
+            $html .= '</div>';
+            $html .= '</div>';
+            $html .= '<script>'
+                    . '$(document).ready(function() { '
+                    . ' start("#card_'.$this->controllerClassName().'","standart");'
+                    . '});'
+                    . '</script>';
+            echo $html;
+        }
+        ?>
+        </div>
+
+        <?php
+
+        echo $this->partial('modal.phtml','admin');
+        echo $this->partial('footer.phtml','admin');
+        echo $this->partial('scriptEnd.phtml','admin');
+
+        ?>
+
+    </body>
+</html>

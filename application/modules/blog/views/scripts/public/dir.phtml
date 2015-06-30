@@ -1,0 +1,94 @@
+<?php
+$model = new Blog_Model_Tree();
+$sub = null;
+$data = null;
+if($this->tree->tree_id != null){
+  $data = $model->fetchRow('id = "'.$this->tree->tree_id.'"');
+  $sub = '<a href="/'.$data->url_name.'">'.$data->name.'</a> / ';
+}
+if($data != null and $data->tree_id != null){
+  $data = $model->fetchRow('id = "'.$data->tree_id.'"');
+  $sub = '<a href="/'.$data->url_name.'">'.$data->name.'</a> / '.$sub;
+}
+if($data != null and $data->tree_id != null){
+  $data = $model->fetchRow('id = "'.$data->tree_id.'"');
+  $sub = '<a href="/'.$data->url_name.'">'.$data->name.'</a> / '.$sub;
+}
+if($data != null and $data->tree_id != null){
+  $data = $model->fetchRow('id = "'.$data->tree_id.'"');
+  $sub = '<a href="/'.$data->url_name.'">'.$data->name.'</a> / '.$sub;
+}
+
+if($sub != null){
+  echo '<div class="navigation"><a href="/">Úvod</a> / '.$sub.'</div>';
+}
+
+?>
+
+
+
+<?php
+
+//nadpis
+echo '<h1>'.$this->tree->name.'</h1>';
+
+
+//text
+if(!empty($this->data->text)){
+  echo $this->data->text;
+  echo '<br />';
+  echo '<br />';
+
+}
+
+
+
+
+//kategórie
+if(is_array($this->childs) and count($this->childs)>0){
+    foreach($this->childs as $child){
+        echo '<div class="box"><div class="in2">';
+        if(count($child['pictures']!=null)){
+          echo '<a href="/'.$child['tree']->url_name.'"><img src="'.$this->baseUrl().'/img.php?folder=gallery&amp;size=profile&amp;image='.$child['pictures'][0]->file_name.'" /></a>';
+        }
+        echo '<h2><a href="/'.$child['tree']->url_name.'">'.$child['tree']->name.'</a></h2><p>'.$child['data']->text_short.'</p></div></div>';
+        //echo '<p>'.$child['data']->text_short.'</p>';
+    }
+}
+//galeria
+if(is_object($this->pictures) and count($this->pictures)>0){
+if(count($this->pictures)>=5){
+echo '<table class="galeria lightBox" style="clear:both;width:100%">';
+}
+else{
+echo '<table class="galeria lightBox" style="clear:both;">';
+}
+  $i=0;
+  foreach($this->pictures as $child){
+
+    $class='';
+    if($i==0){
+      $class=' class="first_line"';
+      $i++;
+    }
+
+
+    if($i == 1){
+      echo '<tr'.$class.'>';
+    }
+
+    echo '<td align="center"><div class="imgGaleria"><a  rel="group" title="'.$child->name.'" href="'.$this->baseUrl().'/img.php?folder=gallery&amp;size=big&amp;image='.$child->file_name.'"><img src="'.$this->baseUrl().'/img.php?folder=gallery&amp;size=thumb&amp;image='.$child->file_name.'" /></a></div></td> ';
+
+    if($i == 5){
+      echo '</tr>';
+      $i = 0;
+    }
+    $i++;
+  }
+  if($i!=1){
+    echo '</tr>';
+  }
+  echo '</table><br/>';
+}
+
+?>

@@ -1,0 +1,26 @@
+
+  <h1>Kategória sa nenašla</h1>
+
+<p>Zrejme sme menili kategórie v našom obchode a hľadanú kategóriu sme presunuli niekam inam.<p>
+
+  <p><a href="/">Prosím prejdite na prvú stranu</a> alebo pužite vyhľadávač v pravo hore.</p>
+
+
+  <?php if (isset($this->exception)): ?>
+  <h2><?php echo $this->message ?></h2>
+
+  <h3>Informácie o výnimke:</h3>
+  <p style="background-color:red;color:white;padding:3px;font-size:120%">
+      <?php echo $this->exception->getMessage() ?>
+  </p>
+
+  <h3>Cesta:</h3>
+  <pre><?php echo $this->exception->getTraceAsString() ?>
+  </pre>
+
+  <h3>Parametre:</h3>
+  <pre><?php echo $this->escape(var_export($this->request->getParams(), true)) ?>
+  </pre>
+
+  <?php endif ?>
+
